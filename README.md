@@ -17,11 +17,7 @@ Based on some code from [nikita-vanyasin/tinkoff](https://github.com/nikita-vany
 
 ## Installation
 ```bash
-# use dep
-dep ensure -add github.com/nikita-vanyasin/tinkoff
-
-# or go get:
-go get github.com/nikita-vanyasin/tinkoff
+go get github.com/codex-team/tinkoff.api.golang
 ``` 
 
 
