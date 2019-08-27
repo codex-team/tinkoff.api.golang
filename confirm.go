@@ -9,9 +9,9 @@ import (
 type ConfirmRequest struct {
 	BaseRequest
 
-	PaymentID uint64           `json:"PaymentId"`
-	ClientIP  string           `json:"IP"`
-	Amount    uint64           `json:"Amount"`
+	PaymentID uint64   `json:"PaymentId"`
+	ClientIP  string   `json:"IP"`
+	Amount    uint64   `json:"Amount"`
 	Receipt   *Receipt `json:"Receipt"`
 }
 
@@ -34,22 +34,23 @@ type ConfirmResponse struct {
 	ErrorDetails string `json:"Details,omitempty"` // Подробное описание ошибки
 }
 
-func (c *Client) Confirm(request *ConfirmRequest) (status string, err error) {
+func (c *Client) Confirm(request *ConfirmRequest) (ConfirmResponse, error) {
+	var res ConfirmResponse
+
 	response, err := c.postRequest("/Confirm", request)
 	if err != nil {
-		return
+		return res, err
 	}
 	defer response.Body.Close()
 
-	var res ConfirmResponse
 	err = c.decodeResponse(response, &res)
 	if err != nil {
-		return
+		return res, err
 	}
 
 	if !res.Success || res.ErrorCode != "0" {
 		err = errors.New(fmt.Sprintf("while Confirm request: code %s - %s. %s", res.ErrorCode, res.ErrorMessage, res.ErrorDetails))
 	}
 
-	return status, err
+	return res, err
 }
